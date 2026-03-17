@@ -1,0 +1,3 @@
+- Type in the terminal:
+    pip install pandas
+    pip install openpyxl
