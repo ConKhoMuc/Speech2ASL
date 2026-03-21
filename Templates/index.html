@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Speech → Video AI</title>
+    <meta charset="utf-8">
+</head>
+<body>
+
+<h2>🎤 Speech → Video AI</h2>
+
+<button onclick="startRecording()">Ghi âm</button>
+<p id="status"></p>
+
+<h3>Text:</h3>
+<p id="text"></p>
+
+<h3>NLPText:</h3>
+<p id="nlptext"></p>
+
+<h3>Video:</h3>
+<video id="video" width="400" controls autoplay></video>
+
+<script>
+let mediaRecorder;
+let audioChunks = [];
+
+async function startRecording() {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+    mediaRecorder = new MediaRecorder(stream);
+    mediaRecorder.start();
+
+    document.getElementById("status").innerText = "Đang ghi âm...";
+
+    mediaRecorder.ondataavailable = event => {
+        audioChunks.push(event.data);
+    };
+
+    setTimeout(() => {
+        mediaRecorder.stop();
+    }, 4000);
+
+    mediaRecorder.onstop = async () => {
+        const audioBlob = new Blob(audioChunks, { type: "audio/wav" });
+        audioChunks = [];
+
+        let formData = new FormData();
+        formData.append("audio", audioBlob, "record.wav");
+
+        document.getElementById("status").innerText = "Đang xử lý...";
+
+        const response = await fetch("http://127.0.0.1:5000/upload_audio", {
+            method: "POST",
+            body: formData,
+            mode: "cors"
+        });
+
+        const data = await response.json();
+
+
+        document.getElementById("text").innerText = data.text;
+         document.getElementById("nlptext").innerText = data.nlptext;
+
+        if (data.video) {
+            document.getElementById("video").src = data.video;
+        } else {
+            alert("Không tìm thấy video phù hợp");
+        }
+
+        document.getElementById("status").innerText = "Hoàn thành";
+    };
+}
+</script>
+
+</body>
+</html>

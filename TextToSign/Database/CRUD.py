@@ -20,10 +20,10 @@ class ImportExcel:
 
         cursor = self.conn.cursor()
 
-        sql = "INSERT INTO text2sign (word, video, image) VALUES (%s,%s,%s)"
+        sql = "INSERT INTO text2sign (word, video, image, source) VALUES (%s,%s,%s,%s)"
 
         data = [
-            (row["word"], row["video"], row["image"])
+            (row["word"], row["video"], row["image"], row["source"])
             for _, row in df.iterrows()
         ]
 
@@ -49,7 +49,7 @@ def create_word(conn, word, video, image):
 def read_words(conn):
     try:
         cursor = conn.cursor()
-        cursor.execute("SELECT id, word, video, image FROM text2sign")
+        cursor.execute("SELECT id, word, video, image, source FROM text2sign")
         rows = cursor.fetchall()
         print("📋 Words list:")
         for row in rows:
@@ -100,7 +100,7 @@ if __name__ == "__main__":
 
         importer = ImportExcel(conn)
 
-        importer.import_words("Text2SignDB.xlsx")
+        importer.import_words(r"D:\Python\SpeechToSignAI\text2sign\Text2SignDB.xlsx")
 
         read_words(conn)
 
