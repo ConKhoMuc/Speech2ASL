@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">AppSpeech2ASL</string>
+    <string name="speech_sign_language">Speech → Sign Language</string>
+    <string name="ai_real_time_translation">AI Real‑time Translation</string>
+    <string name="text">Text</string>
+    <string name="nlp_result">NLP Result</string>
+    <string name="speak">Speak</string>
+</resources>
