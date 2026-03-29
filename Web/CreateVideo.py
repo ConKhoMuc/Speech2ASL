@@ -1,6 +1,9 @@
 import cv2
 import os
 
+
+
+
 def merge_files_to_video(file_list, output_path="final.mp4", fps=25):
 
     width = None
