@@ -2,7 +2,7 @@ from mysql.connector import Error
 
 import pandas as pd
 
-from Speech2ASL.Web.DBConnect import get_connection
+from Web.DBConnect import get_connection
 
 
 class ImportExcel:
